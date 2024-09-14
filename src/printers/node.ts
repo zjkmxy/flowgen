@@ -570,13 +570,9 @@ export const printType = withEnv<any, [any], string>(
         const constraint = type.typeParameter.constraint;
         const typeName = printType(type.typeParameter.name);
         const value = printType(type.type);
-        let source = `{[k: ${printType(constraint)}]: any}`;
         // @ts-expect-error todo(flow->ts)
-        if (constraint.operator === ts.SyntaxKind.KeyOfKeyword) {
-          // @ts-expect-error todo(flow->ts)
-          source = printType(constraint.type);
-        }
-        return `$ObjMapi<${source}, <${typeName}>(${typeName}) => ${value}>`;
+        const operator = (constraint.operator === ts.SyntaxKind.KeyOfKeyword) ? " keyof" : "";
+        return `{[${typeName} in${operator} ${constraint}]}: ${value}`;
       }
 
       case ts.SyntaxKind.BigIntLiteral:

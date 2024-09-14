@@ -38,12 +38,7 @@ const identifiers: { [name: string]: IdentifierResult } = {
   Readonly: "$ReadOnly",
   RegExpMatchArray: "RegExp$matchResult",
   NonNullable: "$NonMaybeType",
-  Partial: ([type]: any[]) => {
-    const isInexact = opts().inexact;
-    return `$Rest<${printers.node.printType(type)}, {${
-      isInexact ? "..." : ""
-    }}>`;
-  },
+  Partial: ([type]: any[]) => `Partial<${printers.node.printType(type)}>`,
   ReturnType: (typeArguments: any[]) => {
     return `$Call<<R>((...args: any[]) => R) => R, ${printers.node.printType(
       typeArguments[0],

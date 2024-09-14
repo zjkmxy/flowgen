@@ -530,18 +530,10 @@ export const printType = withEnv<any, [any], string>(
         //TODO: replace with boolean %checks when supported in class declarations
         return "boolean";
 
-      case ts.SyntaxKind.IndexedAccessType: {
-        let fn = "$ElementType";
-        if (
-          ts.isLiteralTypeNode(type.indexType) &&
-          type.indexType.literal.kind === ts.SyntaxKind.StringLiteral
-        ) {
-          fn = "$PropertyType";
-        }
-        return `${fn}<${printType(type.objectType)}, ${printType(
+      case ts.SyntaxKind.IndexedAccessType:
+        return `${printType(type.objectType)}[${printType(
           type.indexType,
-        )}>`;
-      }
+        )}]`;
 
       case ts.SyntaxKind.TypeOperator:
         switch (type.operator) {

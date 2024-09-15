@@ -12,7 +12,7 @@ const defaultOptions: Options = Object.freeze({
   interfaceRecords: false,
   moduleExports: true,
   quiet: false,
-  inexact: true,
+  inexact: false,
 });
 
 const options: Options = { ...defaultOptions };

@@ -40,16 +40,11 @@ const identifiers: { [name: string]: IdentifierResult } = {
   NonNullable: "$NonMaybeType",
   Partial: ([type]: any[]) => `Partial<${printers.node.printType(type)}>`,
   ReturnType: (typeArguments: any[]) => {
-    return `$Call<<R>((...args: any[]) => R) => R, ${printers.node.printType(
-      typeArguments[0],
-    )}>`;
+    return `ReturnType<${printers.node.printType(typeArguments[0])}>`;
   },
   Record,
   Omit: ([obj, keys]: [any, any]) => {
-    return `$Diff<${printers.node.printType(obj)},${Record(
-      [keys, { kind: ts.SyntaxKind.AnyKeyword }],
-      false,
-    )}>`;
+    return `Omit<${printers.node.printType(obj)}, ${printers.node.printType(keys)}>`;
   },
 };
 

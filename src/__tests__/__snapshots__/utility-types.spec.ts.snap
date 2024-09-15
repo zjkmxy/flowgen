@@ -1,42 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should handle Omit type 1`] = `
-"declare type A = $Diff<
+"declare type A = Omit<
   {
     a: string,
     b: number,
-    ...
   },
-  { a: any }
+  \\"a\\"
 >;
-declare type B = $Diff<
+declare type B = Omit<
   {
     a: string,
     b: number,
-    ...
   },
-  { a: any, b: any }
+  \\"a\\" | \\"b\\"
 >;
 declare type O = {
   a: string,
   b: number,
-  ...
 };
 declare type U = \\"a\\";
-declare type C = $Diff<O, { [key: U]: any }>;
+declare type C = Omit<O, U>;
 "
 `;
 
 exports[`should handle utility types 1`] = `
 "declare type A = $ReadOnly<{
   a: number,
-  ...
 }>;
-declare type B = Partial<{a: number}>;
+declare type B = Partial<{
+  a: number,
+}>;
 declare type C = $NonMaybeType<string | null>;
 declare type D = $ReadOnlyArray<string>;
-declare type E = $Call<<R>((...args: any[]) => R) => R, () => string>;
-declare type F = { [key: string]: number, ... };
+declare type E = ReturnType<() => string>;
+declare type F = { [key: string]: number };
 declare type G = $ReadOnlySet<number>;
 declare type H = $ReadOnlyMap<string, number>;
 declare type A1<Readonly> = Readonly;
@@ -49,7 +47,7 @@ declare type A2<T> = $ReadOnly<T>;
 declare type B2<T> = Partial<T>;
 declare type C2<T> = $NonMaybeType<T>;
 declare type D2<T> = $ReadOnlyArray<T>;
-declare type E2<T> = $Call<<R>((...args: any[]) => R) => R, () => T>;
-declare type F2<T, U> = { [key: T]: U, ... };
+declare type E2<T> = ReturnType<() => T>;
+declare type F2<T, U> = { [key: T]: U };
 "
 `;

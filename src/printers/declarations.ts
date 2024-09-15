@@ -116,7 +116,9 @@ export const interfaceType = <T>(
     return `{${inner}}`;
   }
 
-  return isInexact ? `{${inner}}` : `{|${inner}|}`;
+  // After Flow 0.202 exact by default is enabled, so we need to add the `|`
+  // return isInexact ? `{${inner}}` : `{|${inner}|}`;
+  return `{${inner}}`;
 };
 
 const interfaceRecordType = (

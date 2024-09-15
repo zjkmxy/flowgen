@@ -30,7 +30,7 @@ It's surprisingly robust and non-lossy as it stands right now, in big part thank
 |    | Exclude | `Exclude<T, U>` |  |
 |    | Extract | `Extract<T, U>` |  |
 | ✅ | NonNullable | `NonNullable<X>` | `$NonMaybeType<X>` |
-| ✅ | ReturnType | `ReturnType<F>` | `$Call<<R>((...args: any[]) => R) => R, F>` |
+| ✅ | ReturnType | `ReturnType<F>` | `ReturnType<F>` |
 |    | InstanceType | `InstanceType<X>` |  |
 |    | Required | `Required<X>` |  |
 |    | ThisType | `ThisType<X>` |  |
@@ -42,21 +42,6 @@ It's surprisingly robust and non-lossy as it stands right now, in big part thank
 | ✅ | Tuple type | `[number, string]` | `[number, string]` |
 | ✅ | Type alias | `type A = string` | `type A = string` |
 | ✅ | type/typeof import | `import A from 'module'` | `import type A from 'module'` |
-
-
-// Record: https://flow.org/en/docs/types/utilities/#toc-record
-/// Partial: https://medium.com/flow-type/announcing-partial-required-flow-utility-types-catch-annotations-3a32f0bf2a20
-/// Required: https://medium.com/flow-type/announcing-partial-required-flow-utility-types-catch-annotations-3a32f0bf2a20
-/// as: https://medium.com/flow-type/new-type-casting-syntax-for-flow-as-3ef41567ff3e
-/// Conditional: https://medium.com/flow-type/announcing-conditional-types-765b421f3a87
-// type guards (is): https://medium.com/flow-type/announcing-user-defined-type-guards-in-flow-b979bb2e78cf
-// this type: https://medium.com/flow-type/sound-typing-for-this-in-flow-d62db2af969e
-// pick: https://flow.org/en/docs/types/utilities/#toc-pick
-// exclude: https://flow.org/en/docs/types/utilities/#toc-pick
-// Extract: https://flow.org/en/docs/types/utilities/#toc-pick
-// this type:  can be allowed.   ThisType<> does not.
-// ReturnType: ReturnType
-
 
 ## Usage
 

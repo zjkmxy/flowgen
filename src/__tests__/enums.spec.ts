@@ -1,14 +1,14 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle empty enums", () => {
+it("should handle empty enums", async () => {
   const ts = `enum Empty { }`;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot("class");
+  expect(await beautify(result)).toMatchSnapshot("class");
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle basic enums", () => {
+it("should handle basic enums", async () => {
   const ts = `enum Label {
     LABEL_OPTIONAL,
     LABEL_REQUIRED,
@@ -18,11 +18,11 @@ type A = Label
 type B = Label.LABEL_OPTIONAL
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot("class");
+  expect(await beautify(result)).toMatchSnapshot("class");
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle number enums", () => {
+it("should handle number enums", async () => {
   const ts = `enum Label {
     ONE = 1,
     TWO = 2,
@@ -34,11 +34,11 @@ type A = Label
 type B = Label.TWO
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot("class");
+  expect(await beautify(result)).toMatchSnapshot("class");
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle string enums", () => {
+it("should handle string enums", async () => {
   const ts = `enum Label {
     LABEL_OPTIONAL = 'LABEL_OPTIONAL',
     LABEL_REQUIRED = 'LABEL_REQUIRED',
@@ -48,11 +48,11 @@ type A = Label
 type B = Label.LABEL_REQUIRED
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot("class");
+  expect(await beautify(result)).toMatchSnapshot("class");
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle importing enum types", () => {
+it("should handle importing enum types", async () => {
   const results = compiler.compileDefinitionFiles(
     [
       "src/__tests__/snippet/export-enum-file.ts",
@@ -63,13 +63,13 @@ it("should handle importing enum types", () => {
     },
   );
   for (const result of results) {
-    expect(beautify(result[1])).toMatchSnapshot("class");
+    expect(await beautify(result[1])).toMatchSnapshot("class");
     // TODO: this function only runs flow on one file at a time, so it errors when trying to import
     // expect(result[1]).toBeValidFlowTypeDeclarations();
   }
 });
 
-it("should handle importing enums", () => {
+it("should handle importing enums", async () => {
   const results = compiler.compileDefinitionFiles(
     [
       "src/__tests__/snippet/export-enum-file.ts",
@@ -80,7 +80,7 @@ it("should handle importing enums", () => {
     },
   );
   for (const result of results) {
-    expect(beautify(result[1])).toMatchSnapshot("class");
+    expect(await beautify(result[1])).toMatchSnapshot("class");
     // TODO: this function only runs flow on one file at a time, so it errors when trying to import
     // expect(result[1]).toBeValidFlowTypeDeclarations();
   }

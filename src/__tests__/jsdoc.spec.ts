@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle basic jsdoc", () => {
+it("should handle basic jsdoc", async () => {
   const ts = `const skip: number
 /**
  * @param {string} userToken User authentication token
@@ -92,11 +92,11 @@ function init(
 declare function test(): Promise<void>
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should remove jsdoc", () => {
+it("should remove jsdoc", async () => {
   const ts = `
 /**
  * @param {string} userToken User authentication token
@@ -108,6 +108,6 @@ declare function authorize(userToken: string): Promise<void>
     quiet: true,
     jsdoc: false,
   });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

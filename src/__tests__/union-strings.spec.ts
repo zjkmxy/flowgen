@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle union strings", () => {
+it("should handle union strings", async () => {
   const ts = `
   interface MyObj {
     state?: "APPROVED" | "REQUEST_CHANGES" | "COMMENT" | "PENDING"
@@ -11,6 +11,6 @@ it("should handle union strings", () => {
 
   const result = compiler.compileDefinitionString(ts, { quiet: true });
 
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

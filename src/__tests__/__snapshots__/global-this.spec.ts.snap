@@ -1,10 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should not crash when getting globalThis in code 1`] = `
-"import * as React from \\"react\\";
+"import * as React from "react";
 declare export default class MenuStatefulContainer mixins React.Component<> {
   handleItemClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   render(): React.Node;
+  undefined: /* NO PRINT IMPLEMENTED: SemicolonClassElement */ any;
 }
 "
 `;

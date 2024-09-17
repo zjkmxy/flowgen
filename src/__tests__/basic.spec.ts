@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle basic keywords", () => {
+it("should handle basic keywords", async () => {
   const ts = `type A = {
     a: void,
     b: string,
@@ -29,8 +29,11 @@ it("should handle basic keywords", () => {
   }`;
 
   {
-    const result = compiler.compileDefinitionString(ts, { quiet: true });
-    expect(beautify(result)).toMatchSnapshot();
+    const result = compiler.compileDefinitionString(ts, {
+      quiet: true,
+      inexact: true,
+    });
+    expect(await beautify(result)).toMatchSnapshot();
     expect(result).toBeValidFlowTypeDeclarations();
   }
 
@@ -39,19 +42,19 @@ it("should handle basic keywords", () => {
       quiet: true,
       inexact: false,
     });
-    expect(beautify(result)).toMatchSnapshot();
+    expect(await beautify(result)).toMatchSnapshot();
     expect(result).toBeValidFlowTypeDeclarations();
   }
 });
 
-it("should handle class types", () => {
+it("should handle class types", async () => {
   const ts = `
   declare export class Foo {
   }`;
 
   {
     const result = compiler.compileDefinitionString(ts, { quiet: true });
-    expect(beautify(result)).toMatchSnapshot();
+    expect(await beautify(result)).toMatchSnapshot();
     expect(result).toBeValidFlowTypeDeclarations();
   }
 
@@ -60,7 +63,7 @@ it("should handle class types", () => {
       quiet: true,
       inexact: false,
     });
-    expect(beautify(result)).toMatchSnapshot();
+    expect(await beautify(result)).toMatchSnapshot();
     expect(result).toBeValidFlowTypeDeclarations();
   }
 });

@@ -13,7 +13,7 @@ const setImportedName = (
     if (name === "react" || name === "React") {
       return {
         ReactNode: "Node",
-        ReactElement: "Element",
+        ReactElement: "ElementRef",
       };
     }
     return {};
@@ -41,8 +41,8 @@ const setGlobalName = (
 ): boolean => {
   const globals = [
     {
-      from: ts.createQualifiedName(ts.createIdentifier("JSX"), "Element"),
-      to: ts.createIdentifier("React$Node"),
+      from: ts.factory.createQualifiedName(ts.factory.createIdentifier("JSX"), "Element"),
+      to: ts.factory.createIdentifier("React$Node"),
     },
   ];
   if (checker.current) {

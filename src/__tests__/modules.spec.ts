@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle module", () => {
+it("should handle module", async () => {
   const ts = `
 declare module 'test' {
   declare export type Test = 'ok' | 'error'
@@ -13,11 +13,11 @@ declare module 'test' {
 }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle module merging", () => {
+it("should handle module merging", async () => {
   const ts = `
 declare module 'test' {
   interface A {
@@ -33,11 +33,11 @@ declare module 'test' {
 }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should not merge distinct modules", () => {
+it("should not merge distinct modules", async () => {
   const ts = `
 declare module 'A' {
   export interface A {
@@ -54,11 +54,11 @@ export interface A {
 }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle module function merging", () => {
+it("should handle module function merging", async () => {
   const ts = `
 declare module 'test' {
   declare function test(err: number): void
@@ -68,6 +68,6 @@ declare module 'test' {
 }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

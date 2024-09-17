@@ -28,7 +28,7 @@ async function outputFile(
     // Write the output to disk
     let code = intro + flowDefinitions;
     try {
-      code = beautify(code);
+      code = await beautify(code);
     } catch (e) {
       console.error(e);
     }

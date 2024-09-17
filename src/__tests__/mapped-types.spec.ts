@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle mapped types", () => {
+it("should handle mapped types", async () => {
   const ts = `
 type Ref<T> = {current: T | null}
 type SourceUnion = 'a' | 'b' | 'c'
@@ -18,6 +18,6 @@ type MappedObj = {
 type ConstantKey = MappedObj["a"]
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

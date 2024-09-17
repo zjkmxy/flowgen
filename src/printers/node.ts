@@ -332,26 +332,7 @@ export function getTypeofFullyQualifiedName(
 }
 
 export function printFlowGenHelper(env): string {
-  let helpers = "";
-  if (env.conditionalHelpers) {
-    helpers += `
-// see https://gist.github.com/thecotne/6e5969f4aaf8f253985ed36b30ac9fe0
-type $FlowGen$If<X: boolean, Then, Else = empty> = $Call<
-  & ((true, Then, Else) => Then)
-  & ((false, Then, Else) => Else),
-  X,
-  Then,
-  Else,
->;
-
-type $FlowGen$Assignable<A, B> = $Call<
-  & ((...r: [B]) => true)
-  & ((...r: [A]) => false),
-  A,
->;`;
-  }
-
-  return helpers;
+  return "";
 }
 
 export function fixDefaultTypeArguments(
@@ -459,15 +440,12 @@ export const printType = withEnv<any, [any], string>(
       case ts.SyntaxKind.JSDocNameReference:
         // @ts-expect-error todo(flow->ts) - 'escapedText' does not exist on type 'EntityName | JSDocMemberName'
         return type?.name?.escapedText || "";
-      case ts.SyntaxKind.ConditionalType: {
-        env.conditionalHelpers = true;
-        return `$FlowGen$If<$FlowGen$Assignable<${printType(
+      case ts.SyntaxKind.ConditionalType:
+        return `${printType(
           type.checkType,
-        )},${printType(type.extendsType)}>,${printType(
+        )} extends ${printType(type.extendsType)} ? ${printType(
           type.trueType,
-        )},${printType(type.falseType)}>`;
-      }
-
+        )} : ${printType(type.falseType)}`;
       case ts.SyntaxKind.ComputedPropertyName: {
         if (
           // @ts-expect-error todo(flow->ts)
@@ -527,8 +505,7 @@ export const printType = withEnv<any, [any], string>(
         }
 
       case ts.SyntaxKind.TypePredicate:
-        //TODO: replace with boolean %checks when supported in class declarations
-        return "boolean";
+        return `${type.parameterName.getText()} is ${printType(type.type)}`;
 
       case ts.SyntaxKind.IndexedAccessType:
         return `${printType(type.objectType)}[${printType(
@@ -538,7 +515,7 @@ export const printType = withEnv<any, [any], string>(
       case ts.SyntaxKind.TypeOperator:
         switch (type.operator) {
           case ts.SyntaxKind.KeyOfKeyword:
-            return `$Keys<${printType(type.type)}>`;
+            return `keyof ${printType(type.type)}`;
           case ts.SyntaxKind.UniqueKeyword:
             logger.error(type, { type: "UnsupportedUniqueSymbol" });
             return printType(type.type);
@@ -570,9 +547,7 @@ export const printType = withEnv<any, [any], string>(
         const constraint = type.typeParameter.constraint;
         const typeName = printType(type.typeParameter.name);
         const value = printType(type.type);
-        // @ts-expect-error todo(flow->ts)
-        const operator = (constraint.operator === ts.SyntaxKind.KeyOfKeyword) ? " keyof" : "";
-        return `{[${typeName} in${operator} ${constraint}]}: ${value}`;
+        return `{[${typeName} in ${printType(constraint)}]: ${value}}`;
       }
 
       case ts.SyntaxKind.BigIntLiteral:
@@ -621,11 +596,11 @@ export const printType = withEnv<any, [any], string>(
             );
           }
 
-          const getAdjustedType = targetSymbol => {
+          const getAdjustedType = (targetSymbol: ts.Symbol) => {
             const isTypeImport =
-              symbol &&
-              symbol.declarations &&
-              symbol.declarations[0] &&
+              targetSymbol &&
+              targetSymbol.declarations &&
+              targetSymbol.declarations[0] &&
               ts.isTypeOnlyImportOrExportDeclaration(symbol.declarations[0]);
             if (
               targetSymbol &&
@@ -644,7 +619,11 @@ export const printType = withEnv<any, [any], string>(
                 ${isTypeImport ? "" : "typeof "}
                 ${getTypeofFullyQualifiedName(targetSymbol, type.typeName)}>`;
             }
-            return printers.declarations.typeReference(type, !targetSymbol);
+            return printers.declarations.typeReference(
+              type,
+              // ReadOnlyArray is considered as an InterfaceDeclaration in TypeScript
+              !targetSymbol?.declarations || ts.isInterfaceDeclaration(targetSymbol?.declarations[0])
+            );
           };
 
           // if importing an enum, we have to change how the type is used across the file
@@ -766,7 +745,8 @@ export const printType = withEnv<any, [any], string>(
 
         const isInexact = opts().inexact;
 
-        return isInexact ? `{ ${spreadType} }` : `{| ${spreadType} |}`;
+        // After Flow 0.202 exact by default is enabled, so we need to add the `|`
+        return isInexact ? `{ ${spreadType}, ... }` : `{ ${spreadType} }`;
       }
 
       case ts.SyntaxKind.MethodDeclaration:

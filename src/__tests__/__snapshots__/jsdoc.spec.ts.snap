@@ -29,7 +29,6 @@ declare type F = {
    * a negative index is treated as being relative from the end of the list
    */
   add(entry: any, opt_idx?: number): void,
-  ...
 };
 /**
  * Patches an Element with the the provided function. Exactly one top level
@@ -47,7 +46,7 @@ declare type F = {
 declare var patchOuter: <T>(
   node: Element,
   fn: (data: T) => void,
-  data?: T
+  data?: T,
 ) => Node | null;
 declare class ECharts {}
 /**
@@ -79,8 +78,7 @@ declare function init(
     renderer?: string,
     width?: number | string,
     height?: number | string,
-    ...
-  }
+  },
 ): ECharts;
 
 /**

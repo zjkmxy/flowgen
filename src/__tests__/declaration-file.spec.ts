@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle basic keywords", () => {
+it("should handle basic keywords", async () => {
   const ts = `
 declare interface A {
   bar: string
@@ -14,11 +14,11 @@ export declare const ok: number
     quiet: true,
     asModule: "test",
   });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle basic keywords  cll", () => {
+it("should handle basic keywords  cll", async () => {
   const ts = `
   declare module 'test' {
     interface A {
@@ -31,6 +31,6 @@ it("should handle basic keywords  cll", () => {
     quiet: true,
     asModule: "test",
   });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

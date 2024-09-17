@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle indexers", () => {
+it("should handle indexers", async () => {
   const ts = `
 type Map = {
   [key: string]: number
@@ -9,7 +9,7 @@ type Map = {
 `;
   {
     const result = compiler.compileDefinitionString(ts, { quiet: true });
-    expect(beautify(result)).toMatchSnapshot();
+    expect(await beautify(result)).toMatchSnapshot();
     expect(result).toBeValidFlowTypeDeclarations();
   }
 
@@ -18,7 +18,7 @@ type Map = {
       quiet: true,
       inexact: false,
     });
-    expect(beautify(result)).toMatchSnapshot();
+    expect(await beautify(result)).toMatchSnapshot();
     expect(result).toBeValidFlowTypeDeclarations();
   }
 });

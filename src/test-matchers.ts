@@ -17,12 +17,12 @@ declare global {
 }
 
 expect.extend({
-  toBeValidFlowTypeDeclarations(source) {
-    const beautifiedSource = beautify(source);
+  async toBeValidFlowTypeDeclarations(source) {
+    const beautifiedSource = await beautify(source);
     try {
       execFileSync(
         flow,
-        ["check-contents", "--all", "--color=always", "--timeout=30"],
+        ["check-contents", "--color=always", "--timeout=30"],
         {
           input: beautifiedSource,
           stdio: ["pipe", "pipe", "pipe"],

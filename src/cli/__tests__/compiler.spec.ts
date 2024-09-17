@@ -2,7 +2,7 @@ import compiler from "../compiler";
 import beautify from "../beautifier";
 import "../../test-matchers";
 
-it("should handle maybe & nullable type", () => {
+it("should handle maybe & nullable type", async () => {
   const result = compiler.compileDefinitionString(
     "let a: string | null | undefined",
     { quiet: true },
@@ -12,7 +12,7 @@ it("should handle maybe & nullable type", () => {
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle bounded polymorphism", () => {
+it("should handle bounded polymorphism", async () => {
   const ts = `
     function fooGood<T extends { x: number }>(obj: T): T {
       console.log(Math.abs(obj.x));
@@ -22,6 +22,6 @@ it("should handle bounded polymorphism", () => {
 
   const result = compiler.compileDefinitionString(ts, { quiet: true });
 
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

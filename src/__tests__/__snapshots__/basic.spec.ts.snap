@@ -14,8 +14,8 @@ exports[`should handle basic keywords 1`] = `
   j: 2,
   k: true,
   l: false,
-  m: \\"foo\\",
-  n: \\"bar\\",
+  m: "foo",
+  n: "bar",
   o: empty,
   p: mixed,
   r: -1,
@@ -31,7 +31,7 @@ exports[`should handle basic keywords 1`] = `
 `;
 
 exports[`should handle basic keywords 2`] = `
-"declare type A = {|
+"declare type A = {
   a: void,
   b: string,
   c: any,
@@ -44,8 +44,8 @@ exports[`should handle basic keywords 2`] = `
   j: 2,
   k: true,
   l: false,
-  m: \\"foo\\",
-  n: \\"bar\\",
+  m: "foo",
+  n: "bar",
   o: empty,
   p: mixed,
   r: -1,
@@ -55,7 +55,7 @@ exports[`should handle basic keywords 2`] = `
   v: [1, 2, 3],
   w: $ReadOnlyArray<string>,
   x: RegExp$matchResult,
-|};
+};
 "
 `;
 

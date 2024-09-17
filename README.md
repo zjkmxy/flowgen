@@ -16,8 +16,8 @@ It's surprisingly robust and non-lossy as it stands right now, in big part thank
 | ✅ | Functions | `(a: A, b: B) => C` | `(a: A, b: B) => C` |
 | ✅ | Indexers | `{[k: string]: string}` | `{[k: string]: string}` |
 |    | This type | `(this: X, a: A, b: B) => C` | `(a: A, b: B) => C` |
-|    | Type guards | `(a: X) => a is A` | `(a: X) => boolean` |
-| ✅ | Type parameter bounds | `function f<A extends string>(a:A){}` | `function f<A: string>(a:A){}` |
+| ✅ | Type predicates | `(a: X) => a is A` | `(a: X) => a is A` |
+| ✅ | Type parameter bounds | `function f<A extends string>(a:A){}` | `function f<A extends string>(a:A){}` |
 | ✅ | keyof X | `keyof X` | `$Keys<X>` |
 | ✅ | X[keyof X] | `X[keyof X]` | `X[$Keys<X>]` |
 | ✅ | Partial | `Partial<X>` | `Partial<X>` |
@@ -26,22 +26,28 @@ It's surprisingly robust and non-lossy as it stands right now, in big part thank
 | ✅ | ReadonlySet | `ReadonlySet<X>` | `$ReadOnlySet<X>` |
 | ✅ | ReadonlyMap | `ReadonlyMap<X, Y>` | `$ReadOnlyMap<X, Y>` |
 | ✅ | Record | `Record<K, T>` | `{ [key: K]: T }` |
-|    | Pick | `Pick<T, K>` |  |
-|    | Exclude | `Exclude<T, U>` |  |
-|    | Extract | `Extract<T, U>` |  |
+| ✅ | Pick | `Pick<T, K>` | `Pick<T, K>` |
+| ✅ | Exclude | `Exclude<T, U>` | `Exclude<T, U>` |
+| ✅ | Extract | `Extract<T, U>` | `Extract<T, U>` |
 | ✅ | NonNullable | `NonNullable<X>` | `$NonMaybeType<X>` |
 | ✅ | ReturnType | `ReturnType<F>` | `ReturnType<F>` |
 |    | InstanceType | `InstanceType<X>` |  |
-|    | Required | `Required<X>` |  |
+| ✅ | Required | `Required<X>` |  |
 |    | ThisType | `ThisType<X>` |  |
 | ✅ | T['string'] | `T['string']` | `T['string']` |
 | ✅ | T[k] | `T[k]` | `T[k]` |
 | ✅ | Mapped types | `{[K in keyof Obj]: Obj[K]}` | `{[K in keyof Obj]: Obj[K]}` |
-|    | Conditional types | `A extends B ? C : D` | `any` |
+| ✅ | Conditional types | `A extends B ? C : D` | `A extends B ? C : D` |
 | ✅ | typeof operator | `typeof foo` | `typeof foo` |
 | ✅ | Tuple type | `[number, string]` | `[number, string]` |
 | ✅ | Type alias | `type A = string` | `type A = string` |
 | ✅ | type/typeof import | `import A from 'module'` | `import type A from 'module'` |
+
+
+/// as: https://medium.com/flow-type/new-type-casting-syntax-for-flow-as-3ef41567ff3e
+// this type: https://medium.com/flow-type/sound-typing-for-this-in-flow-d62db2af969e
+// this type:  can be allowed.   ThisType<> does not.
+// namespace
 
 ## Usage
 

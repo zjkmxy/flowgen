@@ -15,7 +15,7 @@ const collectNode = (node: RawNode, context: Node, factory: Factory): void => {
   switch (node.kind) {
     case ts.SyntaxKind.ModuleDeclaration:
       if (
-        node.flags === 4098 ||
+        node.flags === (ts.NodeFlags.DisallowInContext | ts.NodeFlags.Const) ||
         (node.flags & ts.NodeFlags.Namespace) === ts.NodeFlags.Namespace
       ) {
         if (
@@ -203,7 +203,6 @@ function createMakeNameCompatibleWithFlowTransformer(
             );
           renameMap.set(s, id);
           return factory.createTypeAliasDeclaration(
-            node.decorators,
             node.modifiers,
             id,
             node.typeParameters,

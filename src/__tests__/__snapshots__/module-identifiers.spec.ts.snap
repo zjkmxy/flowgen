@@ -1,11 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should handle global types jsx 1`] = `
-"import * as React from \\"react\\";
+"import * as React from "react";
 declare function s(node: React$Node): void;
 declare type Props = {
   children: React$Node,
-  ...
 };
 declare class Component mixins React.Component<Props> {
   render(): React$Node;
@@ -14,11 +13,11 @@ declare class Component mixins React.Component<Props> {
 `;
 
 exports[`should handle react types 1`] = `
-"import type { Node, Element } from \\"react\\";
-import * as React from \\"react\\";
+"import type { Node, ElementRef } from "react";
+import * as React from "react";
 declare function s(node: Node): void;
 declare function s(node: React.Node): void;
-declare function s(node: Element<\\"div\\">): void;
-declare function s(node: React.Element<\\"div\\">): void;
+declare function s(node: ElementRef<"div">): void;
+declare function s(node: React.ElementRef<"div">): void;
 "
 `;

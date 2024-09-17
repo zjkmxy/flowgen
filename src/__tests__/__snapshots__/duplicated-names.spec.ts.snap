@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should be scoped to main file 1`] = `
-"import { Buffer } from \\"buffer\\";
+"import { Buffer } from "buffer";
 export type BufferAlias = Buffer;
 "
 `;
@@ -9,36 +9,30 @@ export type BufferAlias = Buffer;
 exports[`should generate unique names 1`] = `
 "export type AuthMechanismType = string;
 declare export var AuthMechanism: {
-  +MONGODB_AWS: \\"MONGODB-AWS\\",
-  +MONGODB_CR: \\"MONGODB-CR\\",
-  ...
+  +MONGODB_AWS: "MONGODB-AWS",
+  +MONGODB_CR: "MONGODB-CR",
 };
-export type AuthMechanismType1 = (typeof AuthMechanism)[$Keys<
-  typeof AuthMechanism
->];
+export type AuthMechanismType1 =
+  (typeof AuthMechanism)[keyof typeof AuthMechanism];
 "
 `;
 
 exports[`should handle variable & type having same name 1`] = `
 "declare export var AuthMechanism: {
-  +MONGODB_AWS: \\"MONGODB-AWS\\",
-  +MONGODB_CR: \\"MONGODB-CR\\",
-  ...
+  +MONGODB_AWS: "MONGODB-AWS",
+  +MONGODB_CR: "MONGODB-CR",
 };
-export type AuthMechanismType = (typeof AuthMechanism)[$Keys<
-  typeof AuthMechanism
->];
+export type AuthMechanismType =
+  (typeof AuthMechanism)[keyof typeof AuthMechanism];
 "
 `;
 
 exports[`should support generic type rename 1`] = `
 "declare export var ProfilingLevel: $ReadOnly<{
-  +off: \\"off\\",
-  ...
+  +off: "off",
 }>;
-export type ProfilingLevelType = (typeof ProfilingLevel)[$Keys<
-  typeof ProfilingLevel
->];
+export type ProfilingLevelType =
+  (typeof ProfilingLevel)[keyof typeof ProfilingLevel];
 export type Callback<T = any> = (error?: Error, result?: T) => void;
 declare export var callback: Callback<ProfilingLevelType>;
 "

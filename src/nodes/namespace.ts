@@ -1,13 +1,14 @@
 import * as ts from "typescript";
-import { orderBy, uniqBy, flatten } from "lodash";
+import lodash from "lodash";
 import PropertyNode from "./property";
 import Node from "./node";
 
 import namespaceManager from "../namespace-manager";
 import * as printers from "../printers";
 
+const { orderBy, uniqBy, flatten } = lodash;
+
 export default class Namespace extends Node {
-  name: string;
   functions: Array<PropertyNode>;
   property: PropertyNode | undefined;
 

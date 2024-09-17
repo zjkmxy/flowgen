@@ -18,18 +18,18 @@ export function importEqualsTransformer /*opts?: Opts*/() {
         if (
           node.moduleReference.kind === ts.SyntaxKind.ExternalModuleReference
         ) {
-          const importClause = ts.createImportClause(
+          const importClause = ts.factory.createImportClause(
+            false,
             undefined,
-            ts.createNamespaceImport(ts.createIdentifier(node.name.text)),
+            ts.factory.createNamespaceImport(ts.factory.createIdentifier(node.name.text)),
           );
-          const moduleSpecifier = ts.createLiteral(
+          const moduleSpecifier = ts.factory.createStringLiteral(
             // @ts-expect-error todo(flow->ts)
             node.moduleReference.expression.text,
           );
           const importNode = updatePos(
             //$todo Flow has problems when switching variables instead of literals
-            ts.createImportDeclaration(
-              undefined,
+            ts.factory.createImportDeclaration(
               undefined,
               //$todo Flow has problems when switching variables instead of literals
               updatePos(importClause),
@@ -41,11 +41,12 @@ export function importEqualsTransformer /*opts?: Opts*/() {
         } else if (node.moduleReference.kind === ts.SyntaxKind.QualifiedName) {
           const varNode = updatePos(
             //$todo Flow has problems when switching variables instead of literals
-            ts.createVariableStatement(node.modifiers, [
-              ts.createVariableDeclaration(
+            ts.factory.createVariableStatement(node.modifiers, [
+              ts.factory.createVariableDeclaration(
                 node.name,
+                undefined,
                 //$todo Flow has problems when switching variables instead of literals
-                ts.createTypeQueryNode(node.moduleReference),
+                ts.factory.createTypeQueryNode(node.moduleReference),
                 undefined,
               ),
             ]),
@@ -99,19 +100,19 @@ export function declarationFileTransform(options?: Options) {
       return ctx.factory.updateSourceFile(node, [
         ctx.factory.createModuleDeclaration(
           undefined,
-          undefined,
           ctx.factory.createIdentifier(options.asModule),
           ctx.factory.createModuleBlock(
-            node.statements.map(statement => {
-              if (statement.modifiers) {
-                // @ts-expect-error
-                statement.modifiers = statement.modifiers.filter(
-                  modifier => modifier.kind === ts.SyntaxKind.DeclareKeyword,
-                );
-              }
+            // node.statements.map(statement => {
+            //   if (statement.modifiers) {
+            //     // @ts-expect-error
+            //     statement.modifiers = statement.modifiers.filter(
+            //       modifier => modifier.kind === ts.SyntaxKind.DeclareKeyword,
+            //     );
+            //   }
 
-              return statement;
-            }),
+            //   return statement;
+            // }),
+            node.statements
           ),
         ),
       ]);
@@ -218,7 +219,6 @@ export function importTypeToImportDeclaration() {
           //   import * as ${identifier} from ${node.argument};
           const decl = ctx.factory.createImportDeclaration(
             undefined,
-            undefined,
             ctx.factory.createImportClause(
               false,
               undefined,
@@ -243,7 +243,7 @@ export function importTypeToImportDeclaration() {
           // The reference is to something inside the module.
           return ctx.factory.createTypeReferenceNode(
             prependIdentifier(ctx, identifier, node.qualifier),
-            ts.visitNodes(node.typeArguments, visitor),
+            ts.visitNodes(node.typeArguments, visitor, ts.isTypeNode),
           );
         }
       }
@@ -254,7 +254,6 @@ export function importTypeToImportDeclaration() {
           return visited;
         }
         return ctx.factory.updateSourceFile(visited, [
-          // @ts-expect-error
           ...[...imports.values()].map(v => v.decl),
           ...visited.statements,
         ]);

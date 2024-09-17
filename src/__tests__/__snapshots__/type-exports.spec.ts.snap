@@ -4,11 +4,9 @@ exports[`should handle export list syntax 1`] = `
 "declare type ComplexType =
   | {
       type: number,
-      ...
     }
   | {
       type: string,
-      ...
     };
 export type { ComplexType };
 declare var foo: 5;
@@ -20,13 +18,11 @@ exports[`should handle exported types 1`] = `
 "export type FactoryOrValue<T> = T | (() => T);
 export type Maybe<T> =
   | {
-      type: \\"just\\",
+      type: "just",
       value: T,
-      ...
     }
   | {
-      type: \\"nothing\\",
-      ...
+      type: "nothing",
     };
 "
 `;
@@ -35,11 +31,9 @@ exports[`should handle inline export list syntax 1`] = `
 "declare type ComplexType =
   | {
       type: number,
-      ...
     }
   | {
       type: string,
-      ...
     };
 declare var foo: 5;
 export type { ComplexType };

@@ -1,46 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should handle exported constant string literals 1`] = `
-"declare export var SET_NAME: \\"my/lib/SET_NAME\\";
-declare export var SET_STAGE: \\"my/lib/SET_STAGE\\";
+"declare export var SET_NAME: "my/lib/SET_NAME";
+declare export var SET_STAGE: "my/lib/SET_STAGE";
 "
 `;
 
 exports[`should handle string literals in function argument "overloading" 1`] = `
 "declare interface MyObj {
-  on(event: \\"error\\", cb: (err: Error) => void): void;
-  on(event: \\"close\\", cb: (code: number, message: string) => void): void;
+  on(event: "error", cb: (err: Error) => void): void;
+  on(event: "close", cb: (code: number, message: string) => void): void;
   on(
-    event: \\"message\\",
+    event: "message",
     cb: (
       data: any,
       flags: {
         binary: boolean,
-        ...
-      }
-    ) => void
+      },
+    ) => void,
   ): void;
   on(
-    event: \\"ping\\",
+    event: "ping",
     cb: (
       data: any,
       flags: {
         binary: boolean,
-        ...
-      }
-    ) => void
+      },
+    ) => void,
   ): void;
   on(
-    event: \\"pong\\",
+    event: "pong",
     cb: (
       data: any,
       flags: {
         binary: boolean,
-        ...
-      }
-    ) => void
+      },
+    ) => void,
   ): void;
-  on(event: \\"open\\", cb: () => void): void;
+  on(event: "open", cb: () => void): void;
   on(event: string, listener: (...args: any[]) => void): void;
 }
 "

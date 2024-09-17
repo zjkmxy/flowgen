@@ -25,7 +25,7 @@ export default class ExportDeclaration extends Node<ExportDeclarationType> {
         specifier = `from '${this.raw.moduleSpecifier.text}';`;
 
       if (isNamespaceExport(this.raw.exportClause)) {
-        return `declare export * as ${this.raw.exportClause.name.escapedText} ${specifier}\n`;
+        return `declare export * as ${this.raw.exportClause.name.getText()} ${specifier}\n`;
       }
 
       // split exports into type and value exports
@@ -37,13 +37,9 @@ export default class ExportDeclaration extends Node<ExportDeclarationType> {
       } else {
         typeExports = [];
         valueExports = [];
-        let nextIsType = false;
         for (const node of rawElements) {
-          if (nextIsType) {
+          if (node.isTypeOnly) {
             typeExports.push(node);
-            nextIsType = false;
-          } else if (node.name.originalKeywordKind === 150) {
-            nextIsType = true;
           } else {
             valueExports.push(node);
           }

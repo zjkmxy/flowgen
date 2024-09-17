@@ -22,7 +22,6 @@ type PropertyNode =
   | VariableStatement;
 
 export default class Property extends Node<PropertyNode> {
-  name: string;
   skip: boolean;
 
   constructor(node: PropertyNode) {

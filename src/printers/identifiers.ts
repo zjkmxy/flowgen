@@ -37,15 +37,18 @@ const identifiers: { [name: string]: IdentifierResult } = {
   ReadonlyMap: "$ReadOnlyMap",
   Readonly: "$ReadOnly",
   RegExpMatchArray: "RegExp$matchResult",
-  NonNullable: "$NonMaybeType",
-  Partial: ([type]: any[]) => `Partial<${printers.node.printType(type)}>`,
-  ReturnType: (typeArguments: any[]) => {
-    return `ReturnType<${printers.node.printType(typeArguments[0])}>`;
-  },
-  Record,
-  Omit: ([obj, keys]: [any, any]) => {
-    return `Omit<${printers.node.printType(obj)}, ${printers.node.printType(keys)}>`;
-  },
+  NonNullable: "$NonMaybeType",  // NonNullable is also accepted.
+  Partial: "Partial",
+  Required: "Required",
+  ReturnType: "ReturnType",
+  Record: "Record", // Note that Record is different from indexed object.
+  Omit: "Omit",
+  Pick: "Pick",
+  Exclude: "Exclude",
+  Extract: "Extract",
+  Parameters: "Parameters",
+  ThisParameterType: "ThisParameterType",
+  OmitThisParameter: "OmitThisParameter",
 };
 
 export const print = withEnv<any, [string], IdentifierResult>((env, kind) => {

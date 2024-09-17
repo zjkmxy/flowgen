@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle bigint literals in type", () => {
+it("should handle bigint literals in type", async () => {
   const ts = `
     type MyBigType = bigint;
     type bigint_like = number | bigint | string;
@@ -26,6 +26,6 @@ it("should handle bigint literals in type", () => {
 
   const result = compiler.compileDefinitionString(ts, { quiet: true });
 
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

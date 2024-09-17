@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it('should handle string literals in function argument "overloading"', () => {
+it('should handle string literals in function argument "overloading"', async () => {
   const ts = `
   interface MyObj {
       on(event: 'error', cb: (err: Error) => void): void;
@@ -16,11 +16,11 @@ it('should handle string literals in function argument "overloading"', () => {
 
   const result = compiler.compileDefinitionString(ts, { quiet: true });
 
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle exported constant string literals", () => {
+it("should handle exported constant string literals", async () => {
   const ts = `
   export declare const SET_NAME = "my/lib/SET_NAME";
   export declare const SET_STAGE = "my/lib/SET_STAGE";
@@ -28,6 +28,6 @@ it("should handle exported constant string literals", () => {
 
   const result = compiler.compileDefinitionString(ts, { quiet: true });
 
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

@@ -1,6 +1,6 @@
 import fs from "fs";
 import shell from "shelljs";
-import program from "commander";
+import { program } from "commander";
 import { promisify } from "./util";
 
 import type { DirectoryFlowTypedFile } from "./runner.h";

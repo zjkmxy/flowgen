@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle variable & type having same name", () => {
+it("should handle variable & type having same name", async () => {
   const ts = `
   export declare const AuthMechanism: {
     readonly MONGODB_AWS: "MONGODB-AWS";
@@ -10,11 +10,11 @@ it("should handle variable & type having same name", () => {
   export declare type AuthMechanism = typeof AuthMechanism[keyof typeof AuthMechanism];
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should generate unique names", () => {
+it("should generate unique names", async () => {
   const ts = `
   export declare type AuthMechanismType = string;
   export declare const AuthMechanism: {
@@ -24,22 +24,22 @@ it("should generate unique names", () => {
   export declare type AuthMechanism = typeof AuthMechanism[keyof typeof AuthMechanism];
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should be scoped to main file", () => {
+it("should be scoped to main file", async () => {
   const ts = `
   import { Buffer } from 'buffer';
   export declare type BufferAlias = Buffer;
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   // FlowJs is not valid due to `import` not transpiled to typeof
   // expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should support generic type rename", () => {
+it("should support generic type rename", async () => {
   const ts = `
 export declare const ProfilingLevel: Readonly<{
   readonly off: "off";
@@ -51,6 +51,6 @@ export declare type Callback<T = any> = (error?: Error, result?: T) => void;
 export declare const callback: Callback<ProfilingLevel>;
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

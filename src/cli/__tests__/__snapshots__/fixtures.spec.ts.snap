@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`handles the danger.d.ts correctly 1`] = `
-"import * as GitHub from \\"@octokit/rest\\";
+"import * as GitHub from "@octokit/rest";
 
-declare module \\"danger\\" {
+declare module "danger" {
   declare type MarkdownString = string;
 
   /**
@@ -88,7 +88,7 @@ declare module \\"danger\\" {
 
     /**
      * Allows you to schedule a task declared in your Peril config to run in a certain timeframe,
-     * e.g \`runTask(\\"reminder_pr_merge\\", \\"in 2 days\\", { number: 2 })\`. For more details on how this
+     * e.g \`runTask("reminder_pr_merge", "in 2 days", { number: 2 })\`. For more details on how this
      * works, see the Peril documentation.
      * @param taskName the name found in your Peril config
      * @param time the time interval (uses human-internal module)
@@ -141,7 +141,6 @@ declare module \\"danger\\" {
          * Optional headers to add to a request
          */
         additionalHeaders: any,
-        ...
       },
 
       /**
@@ -150,7 +149,6 @@ declare module \\"danger\\" {
        * to the process.
        */
       cliArgs: CliArgs,
-      ...
     };
   }
 
@@ -173,7 +171,7 @@ declare module \\"danger\\" {
      * for displaying links to files.
      *
      * Provides an authenticated API so you can work directly
-     * with the GitHub API. This is an instance of the \\"@ocktokit/rest\\" npm
+     * with the GitHub API. This is an instance of the "@ocktokit/rest" npm
      * module.
      *
      * Finally, if running through Peril on an event other than a PR
@@ -222,7 +220,6 @@ declare module \\"danger\\" {
      * Asynchronous functions to be run after parsing
      */
     scheduled?: any[],
-    ...
   } & DangerResults;
 
   /**
@@ -354,6 +351,7 @@ declare module \\"danger\\" {
   }
 
   /**
+   *
    * The Git Related Metadata which is available inside the Danger DSL JSON
    * @namespace JSONDSL
    */
@@ -416,7 +414,6 @@ declare module \\"danger\\" {
      * @param {string} filename the path to the json file
      */
     JSONDiffForFile(filename: string): Promise<JSONDiff>,
-    ...
   } & GitJSONDSL;
 
   declare interface GitHubJSONDSL {
@@ -458,7 +455,7 @@ declare module \\"danger\\" {
     /**
      * An authenticated API so you can extend danger's behavior by using the [GitHub v3 API](https://developer.github.com/v3/).
      *
-     * A set up instance of the \\"github\\" npm module. You can get the full [API here](https://octokit.github.io/node-github/).
+     * A set up instance of the "github" npm module. You can get the full [API here](https://octokit.github.io/node-github/).
      */
     api: GitHub,
 
@@ -466,7 +463,6 @@ declare module \\"danger\\" {
      * A scope for useful functions related to GitHub
      */
     utils: GitHubUtilsDSL,
-    ...
   } & GitHubJSONDSL;
 
   /**
@@ -479,15 +475,15 @@ declare module \\"danger\\" {
      * You can manually set the target repo and branch however, to make it work how you want.
      * @param {string} paths A list of strings representing file paths
      * @param {string} useBasename Show either the file name, or the full path - defaults to just file name e.g. true.
-     * @param {string} repoSlug An optional override for the repo slug, ex: \\"orta/ORStackView\\"
-     * @param {string} branch An optional override for the branch, ex: \\"v3\\"
+     * @param {string} repoSlug An optional override for the repo slug, ex: "orta/ORStackView"
+     * @param {string} branch An optional override for the branch, ex: "v3"
      * @returns {string} A HTML string of <a>'s built as a sentence.
      */
     fileLinks(
       paths: string[],
       useBasename?: boolean,
       repoSlug?: string,
-      branch?: string
+      branch?: string,
     ): string;
 
     /**
@@ -500,7 +496,7 @@ declare module \\"danger\\" {
     fileContents(
       path: string,
       repoSlug?: string,
-      ref?: string
+      ref?: string,
     ): Promise<string>;
   }
 
@@ -553,7 +549,7 @@ declare module \\"danger\\" {
     /**
      * The state for the PR
      */
-    state: \\"closed\\" | \\"open\\" | \\"locked\\" | \\"merged\\";
+    state: "closed" | "open" | "locked" | "merged";
 
     /**
      * Has the PR been locked to contributors only?
@@ -704,7 +700,7 @@ declare module \\"danger\\" {
     /**
      * Whether the user is an org, or a user
      */
-    type: \\"User\\" | \\"Organization\\";
+    type: "User" | "Organization";
 
     /**
      * The url for a users's image
@@ -722,12 +718,12 @@ declare module \\"danger\\" {
     id: number;
 
     /**
-     * The name of the repo, e.g. \\"Danger-JS\\"
+     * The name of the repo, e.g. "Danger-JS"
      */
     name: string;
 
     /**
-     * The full name of the owner + repo, e.g. \\"Danger/Danger-JS\\"
+     * The full name of the owner + repo, e.g. "Danger/Danger-JS"
      */
     full_name: string;
 
@@ -768,22 +764,22 @@ declare module \\"danger\\" {
   }
   declare interface GitHubMergeRef {
     /**
-     * The human display name for the merge reference, e.g. \\"artsy:master\\"
+     * The human display name for the merge reference, e.g. "artsy:master"
      */
     label: string;
 
     /**
-     * The reference point for the merge, e.g. \\"master\\"
+     * The reference point for the merge, e.g. "master"
      */
     ref: string;
 
     /**
-     * The reference point for the merge, e.g. \\"704dc55988c6996f69b6873c2424be7d1de67bbe\\"
+     * The reference point for the merge, e.g. "704dc55988c6996f69b6873c2424be7d1de67bbe"
      */
     sha: string;
 
     /**
-     * The user that owns the merge reference e.g. \\"artsy\\"
+     * The user that owns the merge reference e.g. "artsy"
      */
     user: GitHubUser;
 
@@ -825,7 +821,7 @@ declare module \\"danger\\" {
      * The state of the review
      * APPROVED, REQUEST_CHANGES, COMMENT or PENDING
      */
-    state?: \\"APPROVED\\" | \\"REQUEST_CHANGES\\" | \\"COMMENT\\" | \\"PENDING\\";
+    state?: "APPROVED" | "REQUEST_CHANGES" | "COMMENT" | "PENDING";
   }
 
   /**

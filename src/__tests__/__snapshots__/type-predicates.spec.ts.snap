@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should handle user-defined type guards 1`] = `
+"declare type Fish = {};
+declare type Bird = {};
+declare function isFish(pet: Fish | Bird): pet is Fish;
+"
+`;

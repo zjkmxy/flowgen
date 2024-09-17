@@ -30,6 +30,7 @@ export const typeParameter = (
   let defaultType = "";
   let constraint = "";
   if (node.constraint) {
+    // ` extends ` should also be OK
     constraint = `: ${printers.node.printType(node.constraint)}`;
   }
   if (!node.withoutDefault && node.default) {

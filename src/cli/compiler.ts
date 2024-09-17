@@ -102,7 +102,7 @@ export default {
 
     const compilerHost = createCompilerHost({}, true);
     const oldSourceFile = compilerHost.getSourceFile;
-    compilerHost.getSourceFile = (file, languageVersion) => {
+    compilerHost.getSourceFile = (file, languageVersion: ScriptTarget) => {
       if (file === "file.ts") {
         return transformFile("/dev/null", string, languageVersion, options);
       }
@@ -137,7 +137,7 @@ export default {
     compilerHost.readFile = fileName =>
       mapSourceCode(oldReadFile(fileName), fileName);
     const absolutePath = path.resolve(definitionPath);
-    compilerHost.getSourceFile = (file, languageVersion) => {
+    compilerHost.getSourceFile = (file, languageVersion: ScriptTarget) => {
       if (path.resolve(file) === absolutePath) {
         const sourceText = compilerHost.readFile(file);
         return transformFile(file, sourceText, languageVersion, options);
@@ -175,7 +175,7 @@ export default {
     compilerHost.readFile = fileName =>
       mapSourceCode(oldReadFile(fileName), fileName);
     const absolutePaths = new Set(definitionPaths.map(p => path.resolve(p)));
-    compilerHost.getSourceFile = (file, languageVersion) => {
+    compilerHost.getSourceFile = (file, languageVersion: ScriptTarget) => {
       if (absolutePaths.has(path.resolve(file))) {
         const sourceText = compilerHost.readFile(file);
         return transformFile(file, sourceText, languageVersion, options);

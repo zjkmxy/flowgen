@@ -18,28 +18,28 @@ exports[`should handle empty enums: class 1`] = `
 
 exports[`should handle importing enum types: class 1`] = `
 "declare export var Label: {|
-  +A: \\"A\\", // \\"A\\"
-  +B: \\"B\\", // \\"B\\"
+  +A: "A", // "A"
+  +B: "B", // "B"
 |};
 "
 `;
 
 exports[`should handle importing enum types: class 2`] = `
-"import typeof { Label } from \\"./export-enum-file\\";
+"import typeof { Label } from "./export-enum-file";
 declare export function foo(label: $Values<Label>): void;
 "
 `;
 
 exports[`should handle importing enums: class 1`] = `
 "declare export var Label: {|
-  +A: \\"A\\", // \\"A\\"
-  +B: \\"B\\", // \\"B\\"
+  +A: "A", // "A"
+  +B: "B", // "B"
 |};
 "
 `;
 
 exports[`should handle importing enums: class 2`] = `
-"import { Label } from \\"./export-enum-file\\";
+"import { Label } from "./export-enum-file";
 declare export function foo(label: $Values<typeof Label>): void;
 "
 `;
@@ -59,9 +59,9 @@ declare type B = typeof Label.TWO;
 
 exports[`should handle string enums: class 1`] = `
 "declare var Label: {|
-  +LABEL_OPTIONAL: \\"LABEL_OPTIONAL\\", // \\"LABEL_OPTIONAL\\"
-  +LABEL_REQUIRED: \\"LABEL_REQUIRED\\", // \\"LABEL_REQUIRED\\"
-  +LABEL_REPEATED: \\"LABEL_REPEATED\\", // \\"LABEL_REPEATED\\"
+  +LABEL_OPTIONAL: "LABEL_OPTIONAL", // "LABEL_OPTIONAL"
+  +LABEL_REQUIRED: "LABEL_REQUIRED", // "LABEL_REQUIRED"
+  +LABEL_REPEATED: "LABEL_REPEATED", // "LABEL_REPEATED"
 |};
 declare type A = $Values<typeof Label>;
 declare type B = typeof Label.LABEL_REQUIRED;

@@ -16,6 +16,7 @@ export const propertyDeclaration = (
     ? printers.node.getFullyQualifiedName(symbol, node.name)
     : printers.node.printType(node.name);
   if (
+    node.kind === ts.SyntaxKind.PropertyDeclaration &&
     node.modifiers &&
     node.modifiers.some(
       modifier => modifier.kind === ts.SyntaxKind.PrivateKeyword,
@@ -24,6 +25,7 @@ export const propertyDeclaration = (
     return "";
   }
   if (
+    node.kind === ts.SyntaxKind.PropertyDeclaration &&
     node.modifiers &&
     node.modifiers.some(
       modifier => modifier.kind === ts.SyntaxKind.ReadonlyKeyword,
@@ -283,9 +285,9 @@ export const enumDeclaration = (
   nodeName: string,
   node: ts.EnumDeclaration,
 ): string => {
+  // Flow enum support is not enabled by default, so we still convert
   const exporter = printers.relationships.exporter(node);
   let members = "";
-  // @ts-expect-error iterating over an iterator
   for (const [index, member] of node.members.entries()) {
     let value;
     if (typeof member.initializer !== "undefined") {
@@ -293,7 +295,7 @@ export const enumDeclaration = (
     } else {
       value = index;
     }
-    members += `+${member.name.text}: ${value},`;
+    members += `+${member.name.getText()}: ${value},`;
     members += `// ${value}\n`;
   }
   return `

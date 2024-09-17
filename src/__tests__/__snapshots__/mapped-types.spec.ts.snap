@@ -3,20 +3,14 @@
 exports[`should handle mapped types 1`] = `
 "declare type Ref<T> = {
   current: T | null,
-  ...
 };
-declare type SourceUnion = \\"a\\" | \\"b\\" | \\"c\\";
+declare type SourceUnion = "a" | "b" | "c";
 declare type SourceObject = {
   a: number,
   d: string,
-  ...
 };
-declare type MappedUnion = {
-  [K in SourceUnion]: Ref<number>
-};
-declare type MappedObj = {
-  [K in keyof SourceObject]: Ref<SourceObject[K]>
-};
-declare type ConstantKey = MappedObj[\\"a\\"];
+declare type MappedUnion = { [K in SourceUnion]: Ref<number> };
+declare type MappedObj = { [K in keyof SourceObject]: Ref<SourceObject[K]> };
+declare type ConstantKey = MappedObj["a"];
 "
 `;

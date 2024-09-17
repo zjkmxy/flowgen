@@ -34,7 +34,7 @@ it('should handle union strings', () => {
 
   const result = compiler.compileDefinitionString(ts);
 
-  expect(beautify(result)).toMatchSnapshot()
+  expect(await beautify(result)).toMatchSnapshot()
   expect(result).toBeValidFlowTypeDeclarations();
 });
 ```

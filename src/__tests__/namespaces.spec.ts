@@ -3,7 +3,7 @@ import "../test-matchers";
 
 describe("should handle merging with other types", () => {
   describe("function", () => {
-    test("interface", () => {
+    test("interface", async () => {
       const ts = `
 declare function test(foo: number): string;
 namespace test {
@@ -13,11 +13,11 @@ namespace test {
 }
 `;
       const result = compiler.compileDefinitionString(ts);
-      expect(beautify(result)).toMatchSnapshot();
+      expect(await beautify(result)).toMatchSnapshot();
       expect(result).toBeValidFlowTypeDeclarations();
     });
 
-    test("type", () => {
+    test("type", async () => {
       const ts = `
 declare function test(foo: number): string;
 namespace test {
@@ -27,11 +27,11 @@ namespace test {
 }
 `;
       const result = compiler.compileDefinitionString(ts);
-      expect(beautify(result)).toMatchSnapshot();
+      expect(await beautify(result)).toMatchSnapshot();
       expect(result).toBeValidFlowTypeDeclarations();
     });
 
-    test("const", () => {
+    test("const", async () => {
       const ts = `
 declare function test(foo: number): string;
 namespace test {
@@ -39,12 +39,12 @@ namespace test {
 }
 `;
       const result = compiler.compileDefinitionString(ts);
-      expect(beautify(result)).toMatchSnapshot();
+      expect(await beautify(result)).toMatchSnapshot();
       expect(result).toBeValidFlowTypeDeclarations();
     });
   });
 
-  test("class", () => {
+  test("class", async () => {
     const ts = `
 declare class Album {
   label: Album.AlbumLabel;
@@ -54,40 +54,40 @@ namespace Album {
 }
 `;
     const result = compiler.compileDefinitionString(ts);
-    expect(beautify(result)).toMatchSnapshot();
+    expect(await beautify(result)).toMatchSnapshot();
     expect(result).toBeValidFlowTypeDeclarations();
   });
 
-  test("enum", () => {
+  test("enum", async () => {
     const ts = `
 // TODO: implement enum merging
 enum Color {
-  red = 1,
-  green = 2,
-  blue = 4
+  Red = 1,
+  Green = 2,
+  Blue = 4
 }
 namespace Color {
   export declare function mixColor(colorName: string): number;
 }
 `;
     const result = compiler.compileDefinitionString(ts);
-    expect(beautify(result)).toMatchSnapshot();
+    expect(await beautify(result)).toMatchSnapshot();
     expect(result).not.toBeValidFlowTypeDeclarations(); // TODO: prop-missing
   });
 });
 
-it("should handle namespaces", () => {
+it("should handle namespaces", async () => {
   const ts = `
 namespace test {
   export const ok: number
 }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle namespace merging", () => {
+it("should handle namespace merging", async () => {
   const ts = `
 namespace test {
   export const ok: number
@@ -97,11 +97,11 @@ namespace test {
 }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle namespace function merging", () => {
+it("should handle namespace function merging", async () => {
   const ts = `
 namespace test {
   declare function test(err: number): void
@@ -111,22 +111,22 @@ namespace test {
 }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle exported interfaces and types", () => {
+it("should handle exported interfaces and types", async () => {
   const ts = `
 namespace Example {
   export interface StoreModel<S> {}
 }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle nested namespaces", () => {
+it("should handle nested namespaces", async () => {
   const ts = `
 import * as external from "external";
 
@@ -169,13 +169,13 @@ declare namespace E0 {
 }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).not.toBeValidFlowTypeDeclarations(); // cannot-resolve-module
 });
 
 describe("should handle nested namespace merging", () => {
   describe("function", () => {
-    test("interface", () => {
+    test("interface", async () => {
       const ts = `
 namespace ns {
   declare function test(foo: number): string;
@@ -187,10 +187,10 @@ namespace ns {
 }
 `;
       const result = compiler.compileDefinitionString(ts);
-      expect(beautify(result)).toMatchSnapshot();
+      expect(await beautify(result)).toMatchSnapshot();
     });
 
-    test("type", () => {
+    test("type", async () => {
       const ts = `
 namespace ns {
   declare function test(foo: number): string;
@@ -202,10 +202,10 @@ namespace ns {
 }
 `;
       const result = compiler.compileDefinitionString(ts);
-      expect(beautify(result)).toMatchSnapshot();
+      expect(await beautify(result)).toMatchSnapshot();
     });
 
-    test("const", () => {
+    test("const", async () => {
       const ts = `
 namespace ns {
   declare function test(foo: number): string;
@@ -215,11 +215,11 @@ namespace ns {
 }
 `;
       const result = compiler.compileDefinitionString(ts);
-      expect(beautify(result)).toMatchSnapshot();
+      expect(await beautify(result)).toMatchSnapshot();
     });
   });
 
-  test("class", () => {
+  test("class", async () => {
     const ts = `
 namespace ns {
   declare class Album {
@@ -231,17 +231,17 @@ namespace ns {
 }
 `;
     const result = compiler.compileDefinitionString(ts);
-    expect(beautify(result)).toMatchSnapshot();
+    expect(await beautify(result)).toMatchSnapshot();
   });
 
-  test("enum", () => {
+  test("enum", async () => {
     const ts = `
 namespace ns {
   // TODO: implement enum merging inside namespaces
   enum Color {
-    red = 1,
-    green = 2,
-    blue = 4
+    Red = 1,
+    Green = 2,
+    Blue = 4
   }
   namespace Color {
     export declare function mixColor(colorName: string): number;
@@ -249,11 +249,11 @@ namespace ns {
 }
 `;
     const result = compiler.compileDefinitionString(ts);
-    expect(beautify(result)).toMatchSnapshot();
+    expect(await beautify(result)).toMatchSnapshot();
   });
 });
 
-test("should handle qualified namespaces", () => {
+test("should handle qualified namespaces", async () => {
   const ts = `
 declare namespace A.B {
   interface S<A> {
@@ -269,25 +269,25 @@ declare namespace A.B.C {
   }
 }`;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).not.toBeValidFlowTypeDeclarations(); // TODO: type-as-value
 });
 
-test("should handle global augmentation", () => {
+test("should handle global augmentation", async () => {
   const ts = `
 declare global {
   interface Array<T> {}
 }`;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-test("should handle import equals declaration", () => {
+test("should handle import equals declaration", async () => {
   const ts = `
 import hello = A.B;
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).not.toBeValidFlowTypeDeclarations(); // cannot-resolve-name
 });

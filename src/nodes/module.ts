@@ -5,8 +5,6 @@ import Node from "./node";
 import Namespace from "./namespace";
 
 export default class Module extends Node {
-  name: string;
-
   constructor(node: RawNode | undefined | null, name: string) {
     super(node);
 

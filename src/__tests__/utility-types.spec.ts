@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle utility types", () => {
+it("should handle utility types", async () => {
   const ts = `
 type A = Readonly<{a: number}>
 type B = Partial<{a: number}>
@@ -27,11 +27,11 @@ type E2<T> = ReturnType<() => T>
 type F2<T, U> = Record<T, U>
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle Omit type", () => {
+it("should handle Omit type", async () => {
   const ts = `
 type A = Omit<{ a: string, b: number }, "a">
 type B = Omit<{ a: string, b: number }, "a" | "b">
@@ -41,6 +41,6 @@ type U = "a";
 type C = Omit<O, U>;
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

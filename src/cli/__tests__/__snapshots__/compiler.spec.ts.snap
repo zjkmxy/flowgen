@@ -4,12 +4,15 @@ exports[`should handle bounded polymorphism 1`] = `
 "declare function fooGood<
   T: {
     x: number,
-    ...
-  }
+  },
 >(
-  obj: T
+  obj: T,
 ): T;
 "
 `;
 
-exports[`should handle maybe & nullable type 1`] = `"declare var a: string | null | void;"`;
+exports[`should handle maybe & nullable type 1`] = `
+"
+
+declare var a: string | null | void;"
+`;

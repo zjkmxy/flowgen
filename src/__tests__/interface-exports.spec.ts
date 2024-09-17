@@ -1,17 +1,17 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle exported interfaces", () => {
+it("should handle exported interfaces", async () => {
   const ts = `export interface UnaryFunction<T, R> {
     (source: T): R;
   }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle exported interfaces within a module", () => {
+it("should handle exported interfaces within a module", async () => {
   const ts = `declare module "my-module" {
     export interface UnaryFunction<T, R> {
       (source: T): R;
@@ -19,6 +19,6 @@ it("should handle exported interfaces within a module", () => {
   }
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

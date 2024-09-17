@@ -1,7 +1,7 @@
 import { compiler, beautify } from "..";
 import "../test-matchers";
 
-it("should handle static methods ES6 classes", () => {
+it("should handle static methods ES6 classes", async () => {
   const ts = `
   class Subscribable<T> {}
   class Operator<T, R> {}
@@ -26,11 +26,11 @@ it("should handle static methods ES6 classes", () => {
   }
   `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle class extends", () => {
+it("should handle class extends", async () => {
   const ts = `
   class extension {
     getString(): string
@@ -40,11 +40,11 @@ it("should handle class extends", () => {
   }
   `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle class implements", () => {
+it("should handle class implements", async () => {
   const ts = `
   interface implementation {
     getString(): string
@@ -54,11 +54,11 @@ it("should handle class implements", () => {
   }
   `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });
 
-it("should handle class implements and extends", () => {
+it("should handle class implements and extends", async () => {
   const ts = `
   interface implementation1 {
     getString(): string
@@ -73,6 +73,6 @@ it("should handle class implements and extends", () => {
   }
   `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
-  expect(beautify(result)).toMatchSnapshot();
+  expect(await beautify(result)).toMatchSnapshot();
   expect(result).toBeValidFlowTypeDeclarations();
 });

@@ -72,7 +72,7 @@ export const importExportSpecifier = (
 
 export const namespace = (name: string, hidePunctuation = false): string => {
   if (namespaceManager.nsExists(name)) {
-    return `${name}${hidePunctuation ? "" : "$"}`;
+    return `${name}${hidePunctuation ? "" : "."}`;
   }
 
   return name + (hidePunctuation ? "" : ".");
@@ -84,7 +84,7 @@ export const namespaceProp = (
 ): string => {
   if (namespaceManager.nsPropExists(name)) {
     return `${namespaceManager.getNSForProp(name)}${
-      hidePunctuation ? "" : "$"
+      hidePunctuation ? "" : "."
     }${name}`;
   }
 

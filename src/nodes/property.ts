@@ -43,9 +43,10 @@ export default class Property extends Node<PropertyNode> {
       namespaceManager.registerProp(namespace, this.name);
     }
 
-    if (namespace) {
-      name = namespace + "$" + name;
-    }
+    // Flow supports namespaces intrincically.
+    // if (namespace) {
+    //   name = namespace + "$" + name;
+    // }
 
     out += printers.common.jsdoc(this.raw);
 

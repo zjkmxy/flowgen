@@ -78,41 +78,17 @@ export default class Namespace extends Node {
   }
 
   print = (namespace = "", mod = "root", depth?: number): string => {
-    const children = uniqBy(
-      orderBy(this.getChildren(), [a => a.isValue], ["desc"]),
-      // @ts-expect-error todo(flow->ts)
-      child => child.name.text || child.name,
-    );
-    let name = this.name;
-    if (namespace) {
-      name = namespace + "$" + this.name;
-    }
-
-    const childrenDeclarations = this.functions
-      // @ts-expect-error The .raw on a this.functions node is a ts.FunctionDeclaration.
-      .map(propNode => printers.functions.functionType(propNode.raw, true))
-      .concat(Namespace.formatChildren(children, name));
-
-    const childrenNode = `${this.getChildren()
+    const children = this.getChildren()
       .map(child => {
-        return child.print(name, mod, depth);
+        return child.print(undefined, this.name, depth + 1);
       })
-      .join("\n\n")}`;
-
-    if (childrenDeclarations.length > 0) {
-      let topLevel = "";
-      const nsGroup = `
-      declare var npm$namespace$${name}: {|
-        ${childrenDeclarations.map(declaration => `${declaration},`).join("\n")}
-      |}\n`;
-      if (namespace === "") {
-        topLevel = `declare var ${name}: typeof npm$namespace$${name};\n`;
-      }
-
-      return topLevel + nsGroup + childrenNode;
+      .join("\n\t");
+    const node = `
+    declare namespace ${this.name} {
+      ${children}
     }
-
-    return childrenNode;
+    `;
+    return `${node}\n`;
   };
 
   static formatChildren(
@@ -150,22 +126,22 @@ export default class Namespace extends Node {
 
     return [].concat(
       functions.map(child => {
-        return `${child.name}: typeof ${childrenNamespace}$${child.name}`;
+        return `${child.name}: typeof ${childrenNamespace}.${child.name}`;
       }),
       variables.map(child => {
-        return `${child.name.text}: typeof ${childrenNamespace}$${child.name.text}`;
+        return `${child.name.text}: typeof ${childrenNamespace}.${child.name.text}`;
       }),
       enums.map(child => {
-        return `${child.name}: typeof ${childrenNamespace}$${child.name}`;
+        return `${child.name}: typeof ${childrenNamespace}.${child.name}`;
       }),
       interfaces.map(child => {
-        return `${child.name}: Class<${childrenNamespace}$${child.name}>`;
+        return `${child.name}: Class<${childrenNamespace}.${child.name}>`;
       }),
       classes.map(child => {
-        return `${child.name}: typeof ${childrenNamespace}$${child.name}`;
+        return `${child.name}: typeof ${childrenNamespace}.${child.name}`;
       }),
       namespaces.map(child => {
-        return `${child.name}: typeof npm$namespace$${childrenNamespace}$${child.name}`;
+        return `${child.name}: typeof ${childrenNamespace}.${child.name}`;
       }),
     );
   }

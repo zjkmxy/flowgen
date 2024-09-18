@@ -72,7 +72,7 @@ namespace Color {
 `;
     const result = compiler.compileDefinitionString(ts);
     expect(await beautify(result)).toMatchSnapshot();
-    expect(result).not.toBeValidFlowTypeDeclarations(); // TODO: prop-missing
+    expect(result).toBeValidFlowTypeDeclarations(); // TODO: prop-missing
   });
 });
 
@@ -170,7 +170,7 @@ declare namespace E0 {
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
   expect(await beautify(result)).toMatchSnapshot();
-  expect(result).not.toBeValidFlowTypeDeclarations(); // cannot-resolve-module
+  expect(result).toBeValidFlowTypeDeclarations(); // cannot-resolve-module
 });
 
 describe("should handle nested namespace merging", () => {
@@ -270,7 +270,7 @@ declare namespace A.B.C {
 }`;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
   expect(await beautify(result)).toMatchSnapshot();
-  expect(result).not.toBeValidFlowTypeDeclarations(); // TODO: type-as-value
+  expect(result).toBeValidFlowTypeDeclarations(); // TODO: type-as-value
 });
 
 test("should handle global augmentation", async () => {
@@ -285,9 +285,12 @@ declare global {
 
 test("should handle import equals declaration", async () => {
   const ts = `
+namespace A {
+  export type B = string;
+}
 import hello = A.B;
 `;
   const result = compiler.compileDefinitionString(ts, { quiet: true });
   expect(await beautify(result)).toMatchSnapshot();
-  expect(result).not.toBeValidFlowTypeDeclarations(); // cannot-resolve-name
+  expect(result).toBeValidFlowTypeDeclarations();
 });

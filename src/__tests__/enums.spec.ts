@@ -85,3 +85,16 @@ it("should handle importing enums", async () => {
     // expect(result[1]).toBeValidFlowTypeDeclarations();
   }
 });
+
+it("should handle import enum values", async () => {
+  const ts = `enum Label {
+    LABEL_OPTIONAL = 'LABEL_OPTIONAL',
+    LABEL_REQUIRED = 'LABEL_REQUIRED',
+    LABEL_REPEATED = 'LABEL_REPEATED',
+  }
+import B = Label.LABEL_REQUIRED
+`;
+  const result = compiler.compileDefinitionString(ts, { quiet: true });
+  expect(await beautify(result)).toMatchSnapshot("class");
+  expect(result).toBeValidFlowTypeDeclarations();
+});

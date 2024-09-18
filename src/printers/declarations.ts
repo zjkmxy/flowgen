@@ -285,7 +285,6 @@ export const enumDeclaration = (
   nodeName: string,
   node: ts.EnumDeclaration,
 ): string => {
-  // Flow enum support is not enabled by default, so we still convert
   const exporter = printers.relationships.exporter(node);
   let members = "";
   for (const [index, member] of node.members.entries()) {
@@ -295,13 +294,13 @@ export const enumDeclaration = (
     } else {
       value = index;
     }
-    members += `+${member.name.getText()}: ${value},`;
+    members += `${member.name.getText()} = ${value},`;
     members += `// ${value}\n`;
   }
   return `
-declare ${exporter} var ${nodeName}: {|
+declare ${exporter} enum ${nodeName} {
   ${members}
-|};\n`;
+};\n`;
 };
 
 export const typeReference = (

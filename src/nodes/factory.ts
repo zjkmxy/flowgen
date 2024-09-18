@@ -55,7 +55,7 @@ export class Factory {
     const propNode = new PropertyNode(node);
 
     if (context instanceof ModuleNode) {
-      name = context.name + "$" + rawName;
+      name = context.name + "." + rawName;
     }
     if (context instanceof NamespaceNode && checker.current) {
       const symbol = checker.current.getSymbolAtLocation(node.name);
@@ -84,7 +84,7 @@ export class Factory {
     }
 
     if (context instanceof ModuleNode) {
-      name = context.name + "$" + name;
+      name = context.name + "." + name;
     }
     if (context instanceof NamespaceNode && checker.current) {
       const symbol = checker.current.getSymbolAtLocation(node.name);
@@ -109,7 +109,7 @@ export class Factory {
   ): NamespaceNode => {
     let contextName;
     if (context instanceof ModuleNode) {
-      contextName = context.name + "$" + name;
+      contextName = context.name + "." + name;
     }
     if (context instanceof NamespaceNode && checker.current) {
       const symbol = checker.current.getSymbolAtLocation(node.name);

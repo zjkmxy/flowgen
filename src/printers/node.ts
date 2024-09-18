@@ -77,7 +77,8 @@ type PrintNode =
   | ts.OptionalTypeNode
   | ts.GetAccessorDeclaration
   | ts.SetAccessorDeclaration
-  | ts.InferTypeNode;
+  | ts.InferTypeNode
+  | ts.ImportEqualsDeclaration;
 
 export function printEntityName(type: ts.EntityName): string {
   if (type.kind === ts.SyntaxKind.QualifiedName) {
@@ -134,7 +135,7 @@ export function getLeftMostPropertyAccessExpression(
 export function getFullyQualifiedPropertyAccessExpression(
   symbol: ts.Symbol | undefined,
   type: any,
-  delimiter = "$",
+  delimiter = ".",
 ): string {
   if (checker.current) {
     const typeChecker = checker.current;
@@ -197,7 +198,7 @@ export function getFullyQualifiedName(
   symbol: ts.Symbol | undefined,
   type: any,
   checks = true,
-  delimiter = "$",
+  delimiter = ".",
 ): string {
   if (checker.current) {
     const typeChecker = checker.current;
@@ -309,7 +310,7 @@ export function getTypeofFullyQualifiedName(
               ts.SymbolFormatFlags.AllowAnyNodeKind,
           );
     } else {
-      let delimiter = "$";
+      let delimiter = ".";
       if (symbol.valueDeclaration?.kind === ts.SyntaxKind.EnumMember) {
         delimiter = ".";
       }
@@ -615,9 +616,11 @@ export const printType = withEnv<any, [any], string>(
               targetSymbol.declarations[0].kind ===
                 ts.SyntaxKind.EnumDeclaration
             ) {
-              return `$Values<
-                ${isTypeImport ? "" : "typeof "}
-                ${getTypeofFullyQualifiedName(targetSymbol, type.typeName)}>`;
+              // Primitive Flow enums shouldn't be referred to by $Values
+              // return `$Values<
+              //   ${isTypeImport ? "" : "typeof "}
+              //   ${getTypeofFullyQualifiedName(targetSymbol, type.typeName)}>`;
+              return getTypeofFullyQualifiedName(targetSymbol, type.typeName)
             }
             return printers.declarations.typeReference(
               type,
@@ -809,6 +812,17 @@ export const printType = withEnv<any, [any], string>(
 
       case ts.SyntaxKind.InferType:
         return printType(type.typeParameter);
+
+      case ts.SyntaxKind.ImportEqualsDeclaration:
+        if (type.moduleReference.kind !== ts.SyntaxKind.ExternalModuleReference) {
+          const symbol = checker.current.getSymbolAtLocation(type.moduleReference);
+          if(symbol?.getFlags() === ts.SymbolFlags.EnumMember) {
+            return `var ${printEntityName(type.name)} = ${printEntityName(type.moduleReference)};`;
+          } else {
+            return `declare type ${printEntityName(type.name)} = ${printEntityName(type.moduleReference)};`;
+          }
+        }
+        return '';
 
       default:
     }

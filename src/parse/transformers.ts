@@ -39,6 +39,8 @@ export function importEqualsTransformer /*opts?: Opts*/() {
           );
           return importNode;
         } else if (node.moduleReference.kind === ts.SyntaxKind.QualifiedName) {
+          // Actually flow support import from a Enum or a namespace
+          // So it is a type if
           const varNode = updatePos(
             //$todo Flow has problems when switching variables instead of literals
             ts.factory.createVariableStatement(node.modifiers, [
@@ -51,7 +53,14 @@ export function importEqualsTransformer /*opts?: Opts*/() {
               ),
             ]),
           );
-          return varNode;
+          // return varNode;
+          return node;
+        } else {
+          // node.moduleReference.kind === ts.SyntaxKind.Identifier
+          logger.error(node, {
+            type: "UnexpectedTsSyntax",
+            description: "Namespace alias like 'import A = B' is not supported",
+          });
         }
       }
       return ts.visitEachChild(node, visitor, ctx);
@@ -182,7 +191,7 @@ function escapeNameAsIdentifierWithPrefix(
 
   // Then we delimit the prefix from the escaped name with `$`, which lacks
   // `ID_Continue` and therefore cannot appear in the escaped name.
-  return prefix + "$" + escapedName;
+  return prefix + "." + escapedName;
 }
 
 /**

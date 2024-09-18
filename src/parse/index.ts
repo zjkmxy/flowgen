@@ -103,6 +103,10 @@ const collectNode = (node: RawNode, context: Node, factory: Factory): void => {
 
     case ts.SyntaxKind.ImportEqualsDeclaration:
       // see transformers
+      context.addChild(
+        parseNameFromNode(node),
+        new Node(node)
+      );
       break;
 
     case ts.SyntaxKind.NamespaceExportDeclaration:
@@ -250,7 +254,7 @@ function makeNameCompatibleWithFlow(ast: any) {
   ]).transformed[0];
 }
 
-export function recursiveWalkTree(ast: any): ModuleNode {
+export function recursiveWalkTree(ast: ts.Node): ModuleNode {
   const factory = NodeFactory.create();
 
   const root = factory.createModuleNode(null, "root");

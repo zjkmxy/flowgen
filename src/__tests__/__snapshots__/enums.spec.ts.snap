@@ -1,69 +1,79 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should handle basic enums: class 1`] = `
-"declare var Label: {|
-  +LABEL_OPTIONAL: 0, // 0
-  +LABEL_REQUIRED: 1, // 1
-  +LABEL_REPEATED: 2, // 2
-|};
-declare type A = $Values<typeof Label>;
+"declare enum Label {
+  LABEL_OPTIONAL = 0, // 0
+  LABEL_REQUIRED = 1, // 1
+  LABEL_REPEATED = 2, // 2
+}
+declare type A = Label;
 declare type B = typeof Label.LABEL_OPTIONAL;
 "
 `;
 
 exports[`should handle empty enums: class 1`] = `
-"declare var Empty: {||};
+"declare enum Empty {}
+"
+`;
+
+exports[`should handle import enum values: class 1`] = `
+"declare enum Label {
+  LABEL_OPTIONAL = "LABEL_OPTIONAL", // "LABEL_OPTIONAL"
+  LABEL_REQUIRED = "LABEL_REQUIRED", // "LABEL_REQUIRED"
+  LABEL_REPEATED = "LABEL_REPEATED", // "LABEL_REPEATED"
+}
+var B = Label.LABEL_REQUIRED;
 "
 `;
 
 exports[`should handle importing enum types: class 1`] = `
-"declare export var Label: {|
-  +A: "A", // "A"
-  +B: "B", // "B"
-|};
+"declare export enum Label {
+  A = "A", // "A"
+  B = "B", // "B"
+}
 "
 `;
 
 exports[`should handle importing enum types: class 2`] = `
 "import typeof { Label } from "./export-enum-file";
-declare export function foo(label: $Values<Label>): void;
+declare export function foo(label: Label): void;
 "
 `;
 
 exports[`should handle importing enums: class 1`] = `
-"declare export var Label: {|
-  +A: "A", // "A"
-  +B: "B", // "B"
-|};
+"declare export enum Label {
+  A = "A", // "A"
+  B = "B", // "B"
+}
 "
 `;
 
 exports[`should handle importing enums: class 2`] = `
 "import { Label } from "./export-enum-file";
-declare export function foo(label: $Values<typeof Label>): void;
+declare export function foo(label: Label): void;
 "
 `;
 
 exports[`should handle number enums: class 1`] = `
-"declare var Label: {|
-  +ONE: 1, // 1
-  +TWO: 2, // 2
-  +THREE: 3, // 3
-  +NEGATIVE: -123, // -123
-  +DECIMAL: 3.14, // 3.14
-|};
-declare type A = $Values<typeof Label>;
+"declare enum Label {
+  ONE = 1, // 1
+  TWO = 2, // 2
+  THREE = 3, // 3
+  NEGATIVE = -123, // -123
+  DECIMAL = 3.14, // 3.14
+}
+declare type A = Label;
 declare type B = typeof Label.TWO;
 "
 `;
 
 exports[`should handle string enums: class 1`] = `
-"declare var Label: {|
-  +LABEL_OPTIONAL: "LABEL_OPTIONAL", // "LABEL_OPTIONAL"
-  +LABEL_REQUIRED: "LABEL_REQUIRED", // "LABEL_REQUIRED"
-  +LABEL_REPEATED: "LABEL_REPEATED", // "LABEL_REPEATED"
-|};
-declare type A = $Values<typeof Label>;
+"declare enum Label {
+  LABEL_OPTIONAL = "LABEL_OPTIONAL", // "LABEL_OPTIONAL"
+  LABEL_REQUIRED = "LABEL_REQUIRED", // "LABEL_REQUIRED"
+  LABEL_REPEATED = "LABEL_REPEATED", // "LABEL_REPEATED"
+}
+declare type A = Label;
 declare type B = typeof Label.LABEL_REQUIRED;
 "
 `;
